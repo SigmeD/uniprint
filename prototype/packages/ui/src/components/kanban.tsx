@@ -128,6 +128,8 @@ export interface KanbanCardProps {
   title: string;
   meta?: ReactNode;
   assignee?: KanbanCardAssignee;
+  /** Ссылка на карточку заказа — делает всю плитку кликабельной. */
+  href?: string;
   className?: string;
 }
 
@@ -144,10 +146,18 @@ export const KanbanCard = ({
   title,
   meta,
   assignee,
+  href,
   className,
-}: KanbanCardProps) => (
-  <div
-    className={cn(className)}
+}: KanbanCardProps) => {
+  const Tag = href != null ? 'a' : 'div';
+  return (
+  <Tag
+    {...(href != null ? { href, 'aria-label': `Заказ ${id} — ${title}` } : {})}
+    className={cn(
+      href != null &&
+        'block transition-[box-shadow,transform] duration-150 hover:-translate-y-px hover:shadow-[var(--shadow-sm)]',
+      className,
+    )}
     style={{
       background:   'var(--color-surface)',
       border:       '1px solid var(--color-line)',
@@ -214,6 +224,7 @@ export const KanbanCard = ({
         </span>
       )}
     </div>
-  </div>
-);
+  </Tag>
+  );
+};
 KanbanCard.displayName = 'KanbanCard';

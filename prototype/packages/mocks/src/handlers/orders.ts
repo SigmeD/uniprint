@@ -1,8 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import type { Order } from '@uniprint/types';
-import { ordersFixture } from '../fixtures/orders';
-
-const orders: Order[] = [...ordersFixture];
+import { addOrder, findOrder, orders } from '../store/order-store';
 
 export const orderHandlers = [
   http.get('/api/orders', ({ request }) => {
@@ -18,7 +16,7 @@ export const orderHandlers = [
   }),
 
   http.get('/api/orders/:id', ({ params }) => {
-    const order = orders.find((o) => o.id === params.id);
+    const order = findOrder(String(params.id));
     if (!order) return new HttpResponse(null, { status: 404 });
     return HttpResponse.json(order);
   }),
@@ -42,16 +40,7 @@ export const orderHandlers = [
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    orders.unshift(newOrder);
+    addOrder(newOrder);
     return HttpResponse.json(newOrder, { status: 201 });
-  }),
-
-  http.patch('/api/orders/:id/status', async ({ params, request }) => {
-    const order = orders.find((o) => o.id === params.id);
-    if (!order) return new HttpResponse(null, { status: 404 });
-    const { status } = (await request.json()) as { status: Order['status'] };
-    order.status = status;
-    order.updatedAt = new Date().toISOString();
-    return HttpResponse.json(order);
   }),
 ];

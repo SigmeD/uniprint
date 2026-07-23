@@ -1,6 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import type { Route } from 'next';
 import {
+  Amount,
   Card,
   CardContent,
   CardHeader,
@@ -11,7 +14,7 @@ import {
   EmptyState,
   Skeleton,
 } from '@uniprint/ui';
-import { Inbox } from 'lucide-react';
+import { ChevronRight, Inbox } from 'lucide-react';
 import type { Order, OrderType } from '@uniprint/types';
 
 const ORDER_TYPE_LABELS: Record<OrderType, string> = {
@@ -90,7 +93,7 @@ export default function OrdersListPage() {
             <table className="w-full border-collapse text-sm">
               <thead>
                 <tr>
-                  {['№', 'Заказ', 'Тип (BR-07)', 'Статус', 'Срок', 'Сумма'].map((col) => (
+                  {['№', 'Заказ', 'Тип (BR-07)', 'Статус', 'Срок', 'Сумма', ''].map((col) => (
                     <th
                       key={col}
                       className="border-b border-[var(--color-line)] bg-[var(--color-surface-3)] px-[22px] py-[11px] text-left text-[10.5px] font-semibold uppercase tracking-[.08em] text-[var(--color-ink-3)]"
@@ -107,12 +110,21 @@ export default function OrdersListPage() {
                     className="border-b border-[var(--color-line)] last:border-none hover:bg-[var(--color-surface-3)]"
                   >
                     <td className="px-[22px] py-[13px]">
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--color-ink-2)', fontWeight: 500 }}>
+                      <Link
+                        href={`/orders/${o.id}` as Route<`/orders/${string}`>}
+                        style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--color-ink-2)', fontWeight: 500 }}
+                        className="hover:text-[var(--color-brand-500)]"
+                      >
                         {o.number}
-                      </span>
+                      </Link>
                     </td>
                     <td className="px-[22px] py-[13px]">
-                      <div className="font-semibold text-[var(--color-ink)]">{o.title}</div>
+                      <Link
+                        href={`/orders/${o.id}` as Route<`/orders/${string}`>}
+                        className="font-semibold text-[var(--color-ink)] hover:text-[var(--color-brand-500)]"
+                      >
+                        {o.title}
+                      </Link>
                       <div className="mt-0.5 text-xs text-[var(--color-ink-3)]">{o.itemsCount} шт</div>
                     </td>
                     <td className="px-[22px] py-[13px]">
@@ -127,9 +139,16 @@ export default function OrdersListPage() {
                       {o.dueDate ? new Date(o.dueDate).toLocaleDateString('ru-RU') : '—'}
                     </td>
                     <td className="px-[22px] py-[13px]">
-                      <span style={{ fontFamily: 'var(--font-display)', fontWeight: 500, fontSize: '14.5px', letterSpacing: '-0.01em' }}>
-                        {o.priceTotal.toLocaleString('ru-RU')} ₽
-                      </span>
+                      <Amount value={o.priceTotal} />
+                    </td>
+                    <td className="px-[22px] py-[13px]">
+                      <Link
+                        href={`/orders/${o.id}` as Route<`/orders/${string}`>}
+                        aria-label={`Открыть заказ ${o.number}`}
+                        className="grid h-7 w-7 place-items-center rounded-md text-[var(--color-ink-3)] hover:bg-[var(--color-surface-2)] hover:text-[var(--color-ink)]"
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </Link>
                     </td>
                   </tr>
                 ))}
