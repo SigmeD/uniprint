@@ -7,6 +7,8 @@ const resolve: CrumbsResolver = (pathname) => {
   if (pathname === '/orders') return [{ label: 'Заказы' }];
   if (pathname === '/orders/new')
     return [{ label: 'Заказы', href: '/orders' }, { label: 'Новый заказ' }];
+  if (pathname.startsWith('/orders/'))
+    return [{ label: 'Заказы', href: '/orders' }, { label: 'Карточка заказа' }];
   return [];
 };
 

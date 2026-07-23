@@ -33,6 +33,14 @@ const STATUS_TO_PILL: Record<OrderStatus, PillSpec> = {
   cancelled:       { tone: 'neutral', label: 'Отменён',                 pulse: false },
 };
 
+/**
+ * Человеко-читаемые названия статусов — единый словарь для бейджей, степпера
+ * и списков выбора следующего статуса.
+ */
+export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = Object.fromEntries(
+  Object.entries(STATUS_TO_PILL).map(([status, spec]) => [status, spec.label]),
+) as Record<OrderStatus, string>;
+
 export interface OrderStatusBadgeProps {
   status: OrderStatus;
   /** @deprecated не влияет — StatPill сам выбирает размер. */

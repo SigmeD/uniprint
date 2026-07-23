@@ -50,10 +50,10 @@ test('warehouse-mobile: списание материала на заказ (BR-
 
 // ── Новые тесты ──────────────────────────────────────────────────────────────
 
-test('client-portal: страница деталей заказа отображает номер, Сводку и статус-бейдж', async ({ page }) => {
+test('client-portal: страница деталей заказа отображает номер, состав и статус-бейдж', async ({ page }) => {
   await page.goto('http://localhost:3001/orders/ord_0001');
   await expect(page.getByText('UNI-2026-', { exact: false }).first()).toBeVisible({ timeout: 8000 });
-  await expect(page.getByText('Сводка')).toBeVisible();
+  await expect(page.getByText('Что заказано')).toBeVisible();
   // OrderStatusBadge для ord_0001 (status=queued) рендерится как span с текстом статуса
   await expect(page.getByText('В очереди')).toBeVisible();
 });
@@ -156,5 +156,6 @@ test('warehouse-mobile: форма брака — кнопка заблокир�
 test('client-portal: 404 на несуществующий заказ показывает not-found UI', async ({ page }) => {
   await page.goto('http://localhost:3001/orders/ord_does_not_exist');
   await expect(page.getByText('Заказ не найден')).toBeVisible({ timeout: 8000 });
-  await expect(page.getByRole('button', { name: /К списку заказов/ })).toBeVisible();
+  // Кнопка возврата — ссылка (Button href), формулировка клиентская
+  await expect(page.getByRole('link', { name: /К моим заказам/ })).toBeVisible();
 });

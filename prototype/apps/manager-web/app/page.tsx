@@ -1,5 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import type { Route } from 'next';
 import {
   AnimatedCounter,
   Button,
@@ -260,6 +262,7 @@ export default function ManagerDashboard() {
                             id={o.number}
                             title={o.title}
                             meta={metaLabel}
+                            href={`/orders/${o.id}`}
                             {...(assignee != null ? { assignee } : {})}
                           />
                         );
@@ -318,19 +321,26 @@ export default function ManagerDashboard() {
                     className="border-b border-[var(--color-line)] last:border-none hover:bg-[var(--color-surface-3)]"
                   >
                     <td className="px-[22px] py-[13px]">
-                      <span
+                      <Link
+                        href={`/orders/${o.id}` as Route<`/orders/${string}`>}
                         style={{
                           fontFamily: 'var(--font-mono)',
                           fontSize: '12px',
                           color: 'var(--color-ink-2)',
                           fontWeight: 500,
                         }}
+                        className="hover:text-[var(--color-brand-500)]"
                       >
                         {o.number}
-                      </span>
+                      </Link>
                     </td>
                     <td className="px-[22px] py-[13px]">
-                      <div className="font-semibold text-[var(--color-ink)]">{o.title}</div>
+                      <Link
+                        href={`/orders/${o.id}` as Route<`/orders/${string}`>}
+                        className="font-semibold text-[var(--color-ink)] hover:text-[var(--color-brand-500)]"
+                      >
+                        {o.title}
+                      </Link>
                     </td>
                     <td className="px-[22px] py-[13px] text-[13px] text-[var(--color-ink-2)]">
                       {tableClientName(o.clientId, o.number)}

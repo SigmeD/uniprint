@@ -22,7 +22,9 @@ interface DemoOrder {
   metaText: string;
   itemsCount: number;
   priceTotal: number;
-  dueDay: number; // day of May 2026
+  /** Разброс срока сдачи: 10…23 → от +1 до +14 дней от сегодня. */
+  dueDay: number;
+  /** Разброс даты создания: 1…13 → от 13 до 1 дня назад. */
   createdDay: number;
 }
 
@@ -218,7 +220,17 @@ const DEMO: DemoOrder[] = [
   },
 ];
 
+/**
+ * Даты заказов считаются от момента загрузки модуля, а не прибиты к маю 2026.
+ * С фиксированными датами любой заказ на демо выглядел просроченным, а таблица
+ * «Все заказы за сегодня» показывала прошлогодние числа. Тот же приём, что и с
+ * `lastLoginAt` в `users.ts`.
+ */
+const NOW = Date.now();
+const DAY = 86_400_000;
+
 export const ordersFixture: Order[] = DEMO.map((d, i) => {
+  const createdAt = new Date(NOW - (14 - d.createdDay) * DAY);
   const order: Order = {
     id: `ord_${String(i + 1).padStart(4, '0')}`,
     number: d.number,
@@ -232,9 +244,9 @@ export const ordersFixture: Order[] = DEMO.map((d, i) => {
     itemsCount: d.itemsCount,
     priceTotal: d.priceTotal,
     costEstimate: Math.floor(d.priceTotal * 0.6),
-    dueDate: new Date(2026, 4, d.dueDay).toISOString(),
-    createdAt: new Date(2026, 4, d.createdDay).toISOString(),
-    updatedAt: new Date(2026, 4, d.createdDay + 1).toISOString(),
+    dueDate: new Date(NOW + (d.dueDay - 9) * DAY).toISOString(),
+    createdAt: createdAt.toISOString(),
+    updatedAt: new Date(createdAt.getTime() + DAY).toISOString(),
   };
   if (d.designerId != null) {
     order.designerId = d.designerId;
