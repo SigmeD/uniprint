@@ -562,11 +562,12 @@ monorepo recipe + §8.2 UI anti-patterns + §8.3 deploy anti-patterns (все и
 «Обнови документацию» из `~/.claude/CLAUDE.md` (Ветка A шаг 2) проверяет
 promotion-кандидатов из текущей сессии.
 
-## Текущий статус (2026-05-08)
+## Текущий статус (2026-07-23)
 
 **Фаза:** Phase-0 (discovery / спецификация / прототип на моках) **закрыта**.
-**Веха:** **КП клиенту собран** (7 файлов в `Docs/kp/` + Notion sync).
-Ждём ответов на 5 ключевых вопросов до 29 мая 2026 для старта Stage A.
+**Веха:** детальная страница заказа в `manager-web` + `client-portal` —
+прототип перестал упираться в тупик на клике по заказу.
+Ждём ответов на 5 ключевых вопросов (🔴 Q1-Q5) для старта Stage A.
 
 ### Последние вехи
 
@@ -593,37 +594,27 @@ promotion-кандидатов из текущей сессии.
   Все 6 verified 200 OK + sub-routes + MSW моки активны. Подробности и
   caveats deploy'а — `Docs/log.md` (запись «Vercel deploy»).
 
-- **2026-05-07** — **Crumbs upgrade** + **S0-S7 cosmetic follow-ups**
-  (`feature/prototype`). Динамические хлебные крошки через `AutoCrumbs`
-  client wrapper + `getRoles(host)` per cabinet, 18 routes mapped.
-  Cosmetic fixes: drill-down hrefs на owner-dashboard (+ stub'ы для
-  /profit и /defects), admin home sort by lastLoginAt (top-5: Мария /
-  Алексей / Дмитрий / Сергей / Виктор), manager-web display-only client
-  override для UNI-00002..00006 в таблице. Button получил `href` prop.
-  Commits `83e84a8` (cosmetic + crumbs), `94f4259` (chore cleanup).
+- **2026-07-23** — **📄 Детальная страница заказа** (`feature/prototype`).
+  `manager-web /orders/[id]` — степпер статус-машины (BR-07), 5 вкладок
+  (Обзор · Производство · Экономика · Документы · История), sticky-сайдбар.
+  `client-portal /orders/[id]` переписан: согласование макета клиентом
+  (BR-11), оплата, лента событий. Живые действия: смена статуса с записью
+  в журнал (BR-20), комментарии. **BR-32 enforce'ится на API** — `?scope=client`
+  отдаёт другой тип без себестоимости и сотрудников. 4 новых компонента
+  (`Amount`, `FieldList`, `StatusStepper`, `Timeline`). Даты фикстуры
+  переведены на отсчёт от «сейчас» — раньше в демо все заказы выглядели
+  просроченными. Pipeline: typecheck 10/10, lint 10/10, unit **26/26**,
+  build 6/6, **e2e 58/58**. Детали — `Docs/log.md` 2026-07-23 +
+  `Docs/superpowers/specs/2026-07-23-order-detail-design.md`.
 
-- **2026-05-07** — **By-cabinet roadmap S0-S7 closed** (`feature/prototype`).
-  Все 6 кабинетов прошли S0-style polish с RoleSwitcher + topbar slots
-  (Crumbs / Search / IconButton Bell) + RoleTag + reference-точное содержание
-  per `Docs/design/references/*.png`:
-  - **S0** — 5 components (RoleTag, Crumbs, SearchInput, IconButton, Tabs) +
-    ROLES config + AppShell topbar slots (`f7669a5`)
-  - **S1** client-portal `00e4de4` · **S2** manager-web `1fee0d8` ·
-    **S3** production-mobile `940be57` · **S4** warehouse-mobile `247610e` ·
-    **S5** admin-panel `56602ed` · **S6** owner-dashboard `454216c`
-  - **Bonus fixes** между спринтами: Button text readability + global
-    OrderStatusBadge color (`4413298`); PwaTabBar глобальный bottom-nav на
-    sub-страницах PWA (`b691619`); ComingSoon + 4 stubs + 6 not-found
-    pages (`a794a4b`)
-  - **S7 hardening** (`75a7b4a`): KpiCard trendIsGood semantics fix (3
-    инцидента resolved), RoleTag tone унификация (все coral), PhoneFrame
-    status bar hide on mobile, lastLoginAt field + formatLastLogin helper,
-    a11y фикс на overflow-x-auto regions per WCAG 2.1.1, e2e адаптация
-    селекторов под новую структуру.
-  - **Pipeline (Rule C, последний прогон 2026-05-07):** typecheck 10/10
-    (3.5s), lint 10/10 0 warnings (0.5s), unit 9/9, build 6/6 (13.9s),
-    **e2e 44/44 PASS** (15.1s).
-  - Подробнее — `Docs/log.md`, `Docs/design/specs/*-diff-v[2-6].md`.
+- **2026-05-07** — **By-cabinet roadmap S0-S7 closed** + crumbs upgrade
+  (`feature/prototype`). Все 6 кабинетов прошли polish с RoleSwitcher,
+  topbar slots, RoleTag и reference-точным содержанием по
+  `Docs/design/references/*.png`. S7 hardening: KpiCard trendIsGood
+  semantics, a11y на overflow-x регионах (WCAG 2.1.1), lastLoginAt.
+  Pipeline: typecheck 10/10, lint 10/10, unit 9/9, build 6/6, e2e 44/44.
+  Полный разбор с commit-хешами — `Docs/log.md` 2026-05-07 и
+  `Docs/design/specs/*-diff-v[2-6].md`.
 
 - **2026-05-06** — **Redesign 2026-05-06** (`feature/prototype`). Полный
   визуальный пересмотр под новую дизайн-концепцию (warm cream + coral + Fraunces
