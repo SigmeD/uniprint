@@ -553,12 +553,36 @@ PostgreSQL ─ Redis ─ S3 (макеты) ─ Face Control SDK adapter
 
 **Memory** — `~/.claude/projects/D--Projects-Uniprint/memory/` (auto-memory).
 
-## Текущий статус (2026-05-07)
+**Cross-project knowledge accumulator** (с 2026-05-08):
+`SigmeD/claude-md-templates` (private, локально `D:\Projects\claude-md-templates`)
+— общая база знаний команды для антихрупкого аккумулирования lessons-learned.
+UniPrint — основной источник lessons для шаблона: §3.7 Vercel deploy + §3.8
+monorepo recipe + §8.2 UI anti-patterns + §8.3 deploy anti-patterns (все из
+шаблона v5+v6, истоки — инциденты UniPrint 2026-05-06/07). Триггер
+«Обнови документацию» из `~/.claude/CLAUDE.md` (Ветка A шаг 2) проверяет
+promotion-кандидатов из текущей сессии.
 
-**Фаза:** Phase-0 (discovery / спецификация / прототип на моках).
-**Спринт:** by-cabinet roadmap **S0-S7 закрыты**, прототип в проде на Vercel.
+## Текущий статус (2026-05-08)
+
+**Фаза:** Phase-0 (discovery / спецификация / прототип на моках) **закрыта**.
+**Веха:** **КП клиенту собран** (7 файлов в `Docs/kp/` + Notion sync).
+Ждём ответов на 5 ключевых вопросов до 29 мая 2026 для старта Stage A.
 
 ### Последние вехи
+
+- **2026-05-08** — **📋 КП для клиента собран** (`feature/prototype`).
+  7 файлов в `Docs/kp/` (1644 строки): README + executive-summary +
+  scope-mvp + roadmap + pricing + risks + appendix. Phased-стратегия:
+  Stage A 7-9 млн (4 кабинета, ~4 мес) → Stage B 2-3 млн (+портал
+  +owner +auto-doc) → Phase 2 4-5 млн T&M (Face Control + payroll +
+  finance) → Phase 3 1.5-2 млн T&M. **Total ownership 15-19 млн ₽** за
+  ~9-10 мес. Старт Stage A — 1 июня 2026. График платежей: 8 траншей
+  (15+10+15+15+20+10+10+5 = 100%) привязаны к 7 milestones. Делегирование
+  через `cs-engineering-lead` + `cs-project-manager` (opus). Spec в
+  `Docs/superpowers/specs/2026-05-08-kp-design.md` с outputs агентов
+  как Appendix А/Б. Все 7 страниц синхронизированы в
+  [Notion](https://www.notion.so/UniPrint-358159174b918033a90adbfb7a949617).
+  Подробности — `Docs/log.md` 2026-05-08.
 
 - **2026-05-07** — **🚀 6 кабинетов в проде на Vercel** (`main`). Все 6
   Next.js apps задеплоены как отдельные Vercel projects с auto-deploy на
